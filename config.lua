@@ -51,7 +51,7 @@ Config.ModTypes = {
     rearbumper = 2,
     skirt = 3,
     callsign_a = 5,
-    grill = 6,
+    grille = 6,
     bonnet = 7,
     driverspot = 8,
     passengerspot = 9,
@@ -80,7 +80,7 @@ Config.Menu = {
     { id = 'frontbumper',   displayName = 'Front Bumper' },
     { id = 'rearbumper',    displayName = 'Rear Bumper' },
     { id = 'skirt',         displayName = 'Skirt' },
-    { id = 'grill',         displayName = 'Grill' },
+    { id = 'grille',         displayName = 'Grille' },
     { id = 'engineblock',   displayName = 'Engine Block' },
     { id = 'bonnet',        displayName = 'Bonnet (Hood)' },
     { id = 'driverspot',    displayName = 'Driver Spotlight' },
@@ -100,3 +100,4 @@ Config.Menu = {
     { id = 'lightbars',     displayName = 'Lightbars' }, 
 
 }
+
