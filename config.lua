@@ -76,13 +76,13 @@ Config.ModTypes = {
 }
 
 Config.Menu = {
-    { id = 'aero',          displayName = 'Aero (Beds)' },
+    { id = 'aero',          displayName = 'Aero' },
     { id = 'frontbumper',   displayName = 'Front Bumper' },
     { id = 'rearbumper',    displayName = 'Rear Bumper' },
     { id = 'skirt',         displayName = 'Skirt' },
     { id = 'grill',         displayName = 'Grill' },
-    { id = 'engineblock',   displayName = 'Engine Block (Grill Surround)' },
-    { id = 'bonnet',        displayName = 'Bonnet (Hood Ornament)' },
+    { id = 'engineblock',   displayName = 'Engine Block' },
+    { id = 'bonnet',        displayName = 'Bonnet (Hood)' },
     { id = 'driverspot',    displayName = 'Driver Spotlight' },
     { id = 'passengerspot', displayName = 'Passenger Spotlight' },
     { id = 'antenna_ray',   displayName = 'Antenna Ray' },
@@ -98,4 +98,5 @@ Config.Menu = {
     { id = 'doors',         displayName = 'Door Tags' }, 
     { id = 'liveries',      displayName = 'Liveries' }, 
     { id = 'lightbars',     displayName = 'Lightbars' }, 
+
 }
