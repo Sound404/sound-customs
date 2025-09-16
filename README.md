@@ -6,5 +6,7 @@ I realized a lot of menus out there don’t have the essentials for the ONX Cars
 **⚠️ Disclaimer**  
 This isn’t a full customization menu. It’s strictly for **cosmetics** on the ONX Cars, so some labels may not make sense if you try to use it on a different PD/EMS car, and the callsign feature won’t work outside its intended setup.  
 
+To open up the menu in game, the command by default is **/mods.** 
+
 https://github.com/user-attachments/assets/9bc015aa-76c7-4742-8599-e702e20486ad
 
