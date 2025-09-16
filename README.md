@@ -1,4 +1,4 @@
-# sound-customization
+# sound-customs
 A Simple Customization Vehicle Menu for the ONX PD/EMS Pack
 
 I realized a lot of menus out there don’t have the essentials for the ONX Cars like VMT_Lightbar. Naturally, at 3 a.m., my brain decided that sleep was overrated and threw this together instead. When I woke up the next day, I couldn’t be bothered to clean up some of the code, but hey, here it is anyway.
