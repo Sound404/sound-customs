@@ -31,13 +31,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const renderCategories = (order) => { 
         categoryList.innerHTML = '';
     
-        order.forEach(key => { 
+        order.forEach((key, i) => { 
             const category = categoriesData[key];
             if (category) {
                 const li = document.createElement('li');
                 li.textContent = category.displayName;
                 li.dataset.key = key;
                 li.addEventListener('click', () => {
+                    selectedIndices.categories = i;
                     if (category.type === 'input') {
                         showCallsignInput();
                     } else {
@@ -196,4 +197,5 @@ document.addEventListener('DOMContentLoaded', () => {
         post('setCallsign', { callsign: callsignInput.value });
         showCategories();
     });
+
 });
