@@ -198,4 +198,42 @@ document.addEventListener('DOMContentLoaded', () => {
         showCategories();
     });
 
+    let isDragging = false;
+    let lastMousePos = { x: 0, y: 0 };
+
+    document.addEventListener('mousedown', (e) => {
+        if (!e.target.closest('#container')) {
+            isDragging = true;
+            lastMousePos = { x: e.clientX, y: e.clientY };
+            document.body.classList.add('dragging');
+        }
+    });
+
+    document.addEventListener('mousemove', (e) => {
+        if (isDragging) {
+            const dx = e.clientX - lastMousePos.x;
+            const dy = e.clientY - lastMousePos.y;
+            lastMousePos = { x: e.clientX, y: e.clientY };
+            post('dragMove', { dx: dx, dy: dy });
+        }
+    });
+
+    document.addEventListener('mouseup', () => {
+        if (isDragging) {
+            isDragging = false;
+            document.body.classList.remove('dragging');
+        }
+    });
+
+    document.addEventListener('wheel', (e) => {
+        if (container.style.display !== 'block') {
+            return;
+        }
+        if (e.target.closest('#container')) {
+        } else {
+            e.preventDefault();
+            const direction = Math.sign(e.deltaY);
+            post('zoom', { direction: direction });
+        }
+    }, { passive: false });
 });
