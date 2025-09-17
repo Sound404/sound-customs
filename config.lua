@@ -1,5 +1,9 @@
 Config = {}
 
+Config.DisableWhileDriving = false -- Keep true if the vehicle shouldn’t be moving before you open the menu
+
+Config.EnableCameraControls = true  -- Keep to true if you want to control the camera with your mouse
+
 Config.RestrictVehicles = true -- Keep to true to only allow the ONX vehicles listed below to use the menu
 
 Config.AllowedVehicles = {
@@ -100,4 +104,5 @@ Config.Menu = {
     { id = 'lightbars',     displayName = 'Lightbars' }, 
 
 }
+
 
