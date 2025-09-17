@@ -8,5 +8,11 @@ This isn’t a full customization menu. It’s strictly for **cosmetics** on the
 
 To open up the menu in game, the command by default is **/mods.** 
 
+To move the camera, simply hold left/right click anywhere outside the menu and drag to look around. You can also use the scroll wheel to zoom in and out.
+
 https://github.com/user-attachments/assets/9bc015aa-76c7-4742-8599-e702e20486ad
+
+Updated Version (w/ new camera feature)
+
+https://github.com/user-attachments/assets/d351a1cc-8bda-4b46-ac1e-c817a36def28
 
