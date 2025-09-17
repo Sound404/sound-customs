@@ -1,3 +1,7 @@
+local isMenuOpen = false
+local cam = nil
+local currentVehicle = nil
+
 local function getModOptions(vehicle, modType, stockName)
     local numMods = GetNumVehicleMods(vehicle, modType)
     if numMods <= 0 then return nil end
@@ -26,8 +30,25 @@ RegisterCommand("mods", function()
         end
     end
 
+    if Config.DisableWhileDriving then
+        if GetEntitySpeed(vehicle) > 1.0 then
+            return
+        end
+    end
+
+    currentVehicle = vehicle
     isMenuOpen = true
     SetVehicleModKit(vehicle, 0)
+
+    if Config.EnableCameraControls then
+        local initialCamPos = GetGameplayCamCoord()
+        cam = CreateCam("DEFAULT_SCRIPTED_CAMERA", true)
+        SetCamCoord(cam, initialCamPos.x, initialCamPos.y, initialCamPos.z)
+        SetCamFov(cam, GetGameplayCamFov())
+        PointCamAtEntity(cam, currentVehicle, 0.0, 0.0, 0.25, true) 
+        SetCamActive(cam, true)
+        RenderScriptCams(true, false, 0, true, true)
+    end
 
     local categories = {
         callsign = { displayName = "Set Callsign", type = 'input' }
@@ -59,6 +80,79 @@ RegisterCommand("mods", function()
     })
     SetNuiFocus(true, true)
 end, false)
+
+RegisterNUICallback("dragMove", function(data, cb)
+    if not Config.EnableCameraControls then return cb({ success = true }) end
+    
+    if not isMenuOpen or not cam or not currentVehicle then return cb({ success = true }) end
+
+    local vehPos = GetEntityCoords(currentVehicle)
+    local camPos = GetCamCoord(cam)
+    
+    local newCamX, newCamY, newCamZ = camPos.x, camPos.y, camPos.z
+
+    if data.dx then
+        local angle = -data.dx * 0.35 
+        local rad = math.rad(angle)
+        local cos = math.cos(rad)
+        local sin = math.sin(rad)
+        local offsetX = newCamX - vehPos.x
+        local offsetY = newCamY - vehPos.y
+        local newOffsetX = offsetX * cos - offsetY * sin
+        local newOffsetY = offsetX * sin + offsetY * cos
+        newCamX = vehPos.x + newOffsetX
+        newCamY = vehPos.y + newOffsetY
+    end
+
+    local foundGround, groundZ = GetGroundZFor_3dCoord(newCamX, newCamY, newCamZ, false)
+    
+    if data.dy then
+        local newZ = newCamZ + (data.dy * 0.02)
+        local minHeight = (foundGround and groundZ or vehPos.z) + 0.2
+        local maxHeight = vehPos.z + 7.0
+        newCamZ = math.max(minHeight, math.min(maxHeight, newZ))
+    end
+
+    SetCamCoord(cam, newCamX, newCamY, newCamZ)
+    PointCamAtEntity(cam, currentVehicle, 0.0, 0.0, 0.25, true)
+
+    cb({ success = true })
+end)
+
+RegisterNUICallback("zoom", function(data, cb)
+    if not Config.EnableCameraControls then return cb({ success = true }) end
+
+    if not isMenuOpen or not data.direction or not cam or not currentVehicle then
+        cb({ success = false })
+        return
+    end
+    
+    local model = GetEntityModel(currentVehicle)
+    local min, max = GetModelDimensions(model)
+    local minDistance = (#(max - min) / 2.0) + 0.5 
+
+    local maxDistance = 8.0
+    local zoomAmount = 0.25
+
+    local vehPos = GetEntityCoords(currentVehicle)
+    local camPos = GetCamCoord(cam)
+
+    local offset = camPos - vehPos
+    local currentDistance = #(offset)
+    if currentDistance < 0.01 then return end
+
+    local newDistance = currentDistance + (data.direction * zoomAmount)
+    
+    newDistance = math.max(minDistance, math.min(maxDistance, newDistance))
+
+    if math.abs(newDistance - currentDistance) > 0.01 then
+        local direction = offset / currentDistance
+        local newCamPos = vehPos + (direction * newDistance)
+        SetCamCoord(cam, newCamPos.x, newCamPos.y, newCamPos.z)
+    end
+    
+    cb({ success = true })
+end)
 
 RegisterNUICallback("setCallsign", function(data, cb)
     local playerPed = PlayerPedId()
@@ -126,8 +220,28 @@ RegisterNUICallback("select", function(data, cb)
 end)
 
 RegisterNUICallback("close", function(data, cb)
+    isMenuOpen = false
     SendNUIMessage({ action = "hide" })
     SetNuiFocus(false, false)
-    isMenuOpen = false
+
+    if Config.EnableCameraControls then
+        if cam and currentVehicle and DoesEntityExist(currentVehicle) then
+            local camRot = GetCamRot(cam, 2)
+            local vehHeading = GetEntityHeading(currentVehicle)
+            local relativeHeading = camRot.z - vehHeading
+
+            SetGameplayCamRelativeHeading(relativeHeading)
+            SetGameplayCamRelativePitch(camRot.x, 1.0)
+        end
+
+        RenderScriptCams(false, false, 0, true, true)
+        if cam then
+            DestroyCam(cam, false)
+        end
+    end
+
+    cam = nil
+    currentVehicle = nil
+
     cb({ success = true })
 end)
