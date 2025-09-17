@@ -1,6 +1,6 @@
 Config = {}
 
-Config.DisableWhileDriving = false -- Keep true if the vehicle shouldn’t be moving before you open the menu
+Config.DisableWhileDriving = true -- Keep true if the vehicle shouldn’t be moving before you open the menu
 
 Config.EnableCameraControls = true  -- Keep to true if you want to control the camera with your mouse
 
@@ -104,5 +104,6 @@ Config.Menu = {
     { id = 'lightbars',     displayName = 'Lightbars' }, 
 
 }
+
 
 
